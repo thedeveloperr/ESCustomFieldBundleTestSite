@@ -1,0 +1,27 @@
+{
+  "name": "sbcamp/custom-fields-bundle",
+  "description": "A scalable way to add full text searchable custom fields to a Leads in CRM or Profiles in Customer Care Software or any other where many Custom fields are useful.",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mohit Gupta",
+      "email": "thedeveloperrmail@gmail.com"
+    },
+    {
+      "name": "Jaskaran Singh Rehal",
+      "email": "jaskaranrehal@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.1.3",
+    "elasticsearch/elasticsearch": "^6.0"
+
+  },
+  "autoload": {
+    "psr-4": {
+      "Sbcamp\\Bundle\\CustomFieldsBundle\\":"./"
+    }
+  }
+
+}
