@@ -119,9 +119,6 @@
     "react/promise": {
         "version": "v2.7.0"
     },
-    "ruflin/elastica": {
-        "version": "6.0.2"
-    },
     "sbcamp/custom-fields-bundle": {
         "version": "dev-develop"
     },

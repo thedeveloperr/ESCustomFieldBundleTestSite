@@ -15,7 +15,7 @@
   ],
   "require": {
     "php": "^7.1.3",
-    "ruflin/elastica": "^6.0.2"
+    "elasticsearch/elasticsearch": "^6.0"
 
   },
   "autoload": {

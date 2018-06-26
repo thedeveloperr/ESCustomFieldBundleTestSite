@@ -1881,75 +1881,17 @@
             "time": "2018-06-13T15:59:06+00:00"
         },
         {
-            "name": "ruflin/elastica",
-            "version": "6.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "8a6a3b2e71fdf7c96ad92fd2622bcc5904696fcf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/8a6a3b2e71fdf7c96ad92fd2622bcc5904696fcf",
-                "reference": "8a6a3b2e71fdf7c96ad92fd2622bcc5904696fcf",
-                "shasum": ""
-            },
-            "require": {
-                "elasticsearch/elasticsearch": "^6.0",
-                "php": "^7.0",
-                "psr/log": "~1.0"
-            },
-            "require-dev": {
-                "aws/aws-sdk-php": "~3.0",
-                "guzzlehttp/guzzle": "~6.0"
-            },
-            "suggest": {
-                "aws/aws-sdk-php": "Allow using IAM authentication with Amazon ElasticSearch Service",
-                "egeloen/http-adapter": "Allow using httpadapter transport",
-                "guzzlehttp/guzzle": "Allow using guzzle 6 as the http transport",
-                "monolog/monolog": "Logging request"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "6.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Elastica\\": "lib/Elastica/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Ruflin",
-                    "homepage": "http://ruflin.com/"
-                }
-            ],
-            "description": "Elasticsearch Client",
-            "homepage": "http://elastica.io/",
-            "keywords": [
-                "client",
-                "search"
-            ],
-            "time": "2018-05-29T08:31:52+00:00"
-        },
-        {
             "name": "sbcamp/custom-fields-bundle",
             "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "/Users/thedeveloperr/dev/sbcampv3/projects/ESCustomFieldBundleTestSite/src/Sbcamp/Bundle/CustomFieldsBundle",
-                "reference": "203050965822cf42beebc22865787f7005879e33",
+                "reference": "a2e9f53b5bf180adea375aa379d092a5d5376abd",
                 "shasum": null
             },
             "require": {
-                "php": "^7.1.3",
-                "ruflin/elastica": "^6.0.2"
+                "elasticsearch/elasticsearch": "^6.0",
+                "php": "^7.1.3"
             },
             "type": "symfony-bundle",
             "autoload": {
