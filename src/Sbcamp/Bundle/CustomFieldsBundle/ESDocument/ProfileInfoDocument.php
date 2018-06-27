@@ -8,6 +8,11 @@ class ProfileInfoDocument implements ESDocumentInterface {
   public static $type = '_doc';
   private $fields = [];
 
+  /**
+   * @var string|null
+   */
+  private $id = null;
+
   public function __construct(){
 
   }

@@ -2,19 +2,19 @@
 
 namespace Sbcamp\Bundle\CustomFieldsBundle\Repository;
 
-use Sbcamp\Bundle\CustomFieldsBundle\Entity\ESFieldsMapping;
+use Sbcamp\Bundle\CustomFieldsBundle\Entity\ESMappingField;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
- * Repository for CRUD on ESFieldsMapping Entity
+ * Repository for CRUD on ESMappingField Entity
  *
- * @method ESFieldsMapping|null find($id, $lockMode = NULL, $lockVersion = NULL)
- * @method ESFieldsMapping|null findOneBy(array $criteria, array $orderBy = NULL)
- * @method ESFieldsMapping[]    findAll()
- * @method ESFieldsMapping[]    findBy(array $criteria, array $orderBy = NULL, $limit = NULL, $offset = NULL)
+ * @method ESMappingField|null find($id, $lockMode = NULL, $lockVersion = NULL)
+ * @method ESMappingField|null findOneBy(array $criteria, array $orderBy = NULL)
+ * @method ESMappingField[]    findAll()
+ * @method ESMappingField[]    findBy(array $criteria, array $orderBy = NULL, $limit = NULL, $offset = NULL)
  */
-class ESFieldsMappingRepository {
+class ESMappingFieldRepository {
 
   /**
    * @var EntityRepository
@@ -28,14 +28,14 @@ class ESFieldsMappingRepository {
 
   public function __construct(EntityManagerInterface $em) {
     $this->em = $em;
-    $this->repo = $em->getRepository(ESFieldsMapping::class);
+    $this->repo = $em->getRepository(ESMappingField::class);
   }
 
   /**
    * @param string $ownerId
    * @param string $datatype
    *
-   * @return ESFieldsMapping[]
+   * @return ESMappingField[]
    */
   public function fetchESFieldNamesByDataype(string $datatype): array {
     return $this->repo->createQueryBuilder('esm')
@@ -47,10 +47,10 @@ class ESFieldsMappingRepository {
   }
 
   /**
-   * @param ESFieldsMapping $esFieldsMapping
+   * @param ESMappingField $ESMappingField
    */
-  public function insert(ESFieldsMapping $esFieldsMapping) {
-    $this->em->persist($esFieldsMapping);
+  public function insert(ESMappingField $ESMappingField) {
+    $this->em->persist($ESMappingField);
     $this->em->flush();
   }
 

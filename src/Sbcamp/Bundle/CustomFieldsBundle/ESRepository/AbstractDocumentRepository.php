@@ -3,6 +3,7 @@
 namespace Sbcamp\Bundle\CustomFieldsBundle\ESRepository;
 
 use Elasticsearch\Client;
+use ONGR\ElasticsearchDSL\Search;
 use Sbcamp\Bundle\CustomFieldsBundle\ESDocument\ESDocumentInterface;
 use Sbcamp\Bundle\CustomFieldsBundle\ESDocument\ProfileInfoDocument;
 

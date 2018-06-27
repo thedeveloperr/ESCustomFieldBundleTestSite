@@ -2,6 +2,8 @@
 
 namespace Sbcamp\Bundle\CustomFieldsBundle\ESRepository;
 
-class ProfileInfoDocumentRepository {
+class ProfileInfoDocumentRepository extends AbstractDocumentRepository {
+
+
 
 }

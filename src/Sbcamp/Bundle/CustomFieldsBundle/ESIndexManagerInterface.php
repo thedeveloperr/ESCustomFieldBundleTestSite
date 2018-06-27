@@ -12,11 +12,23 @@ interface ESIndexManagerInterface {
   public function addNewMappingFields(array $fields);
 
   /**
+   * @param array $fields
+   *
+   * @return mixed
+   */
+  public function addNewMappingField(ESMappingFieldInterface $field);
+
+  /**
    * @param array $settings
    *
    * @return mixed
    */
   public function addSettings(array $settings);
+
+  /**
+   * @return array
+   */
+  public function getSettings():array;
 
   /**
    * @return array
