@@ -1444,6 +1444,108 @@
             "time": "2017-05-04T11:12:50+00:00"
         },
         {
+            "name": "ongr/elasticsearch-dsl",
+            "version": "v6.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ongr-io/ElasticsearchDSL.git",
+                "reference": "6f9ba45d73755fb963f449c3680b9c53c7480679"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ongr-io/ElasticsearchDSL/zipball/6f9ba45d73755fb963f449c3680b9c53c7480679",
+                "reference": "6f9ba45d73755fb963f449c3680b9c53c7480679",
+                "shasum": ""
+            },
+            "require": {
+                "paragonie/random_compat": "^1.0|^2.0",
+                "php": "^7.0",
+                "symfony/serializer": "^3.0|^4.0"
+            },
+            "require-dev": {
+                "elasticsearch/elasticsearch": "^6.0",
+                "phpunit/phpunit": "^6.0",
+                "satooshi/php-coveralls": "~1.0|~2.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "suggest": {
+                "elasticsearch/elasticsearch": "This library is for elasticsearch/elasticsearch client to enhance it with DSL functionality."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ONGR\\ElasticsearchDSL\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ONGR team",
+                    "homepage": "http://www.ongr.io"
+                }
+            ],
+            "description": "Elasticsearch DSL library",
+            "homepage": "http://ongr.io",
+            "time": "2018-05-03T09:57:15+00:00"
+        },
+        {
+            "name": "paragonie/random_compat",
+            "version": "v2.0.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/random_compat.git",
+                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/10bcb46e8f3d365170f6de9d05245aa066b81f09",
+                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*|5.*"
+            },
+            "suggest": {
+                "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/random.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paragon Initiative Enterprises",
+                    "email": "security@paragonie.com",
+                    "homepage": "https://paragonie.com"
+                }
+            ],
+            "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
+            "keywords": [
+                "csprng",
+                "polyfill",
+                "pseudorandom",
+                "random"
+            ],
+            "time": "2018-06-08T15:26:40+00:00"
+        },
+        {
             "name": "phpdocumentor/reflection-common",
             "version": "1.0.1",
             "source": {
@@ -1886,11 +1988,12 @@
             "dist": {
                 "type": "path",
                 "url": "/Users/thedeveloperr/dev/sbcampv3/projects/ESCustomFieldBundleTestSite/src/Sbcamp/Bundle/CustomFieldsBundle",
-                "reference": "a2e9f53b5bf180adea375aa379d092a5d5376abd",
+                "reference": "537fbfb49249dddfe5098d52ced8a10043a12a67",
                 "shasum": null
             },
             "require": {
                 "elasticsearch/elasticsearch": "^6.0",
+                "ongr/elasticsearch-dsl": "^6.0",
                 "php": "^7.1.3"
             },
             "type": "symfony-bundle",

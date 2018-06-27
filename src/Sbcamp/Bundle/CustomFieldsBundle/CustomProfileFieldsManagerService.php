@@ -91,9 +91,9 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
     $updatedOldCustomFieldRecord->setEsFieldName($newField->getName());
     $this->customFieldRepo->insert($updatedOldCustomFieldRecord);
 
-    //    $newCustomFieldRecord = new CustomFieldsRecordsMaps($field);
-    //    $newCustomFieldRecord->setEsFieldName($this->getESFieldNotInUse());
-    //    $newCustomFieldRecord->save();
+//        $newCustomFieldRecord = new CustomFieldsRecordsMaps($field);
+//        $newCustomFieldRecord->setEsFieldName($this->getESFieldNotInUse());
+//        $newCustomFieldRecord->save();
   }
 
   public function doesCustomFieldExists(CustomFieldInterface $field): bool {
