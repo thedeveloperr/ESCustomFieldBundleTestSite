@@ -48,14 +48,14 @@ class CustomFieldsRecordsMapsRepository {
    * @return CustomFieldsRecordsMaps
    * @throws NonUniqueResultException
    */
-  public function fetchByCompositeId(string $ownerId, string $machineFieldName):CustomFieldsRecordsMaps{
+  public function fetchByCompositeId(string $ownerId, string $machineFieldName): CustomFieldsRecordsMaps {
     return $this->repo->createQueryBuilder('cm')
-               ->where('cm.ownerId = :ownerId')
-               ->andWhere('cm.machineFieldName = :machineFieldName')
-               ->setParameter('ownerId', $ownerId)
-               ->setParameter("machineFieldName", $machineFieldName)
-               ->getQuery()
-               ->getOneOrNullResult();
+                      ->where('cm.ownerId = :ownerId')
+                      ->andWhere('cm.machineFieldName = :machineFieldName')
+                      ->setParameter('ownerId', $ownerId)
+                      ->setParameter("machineFieldName", $machineFieldName)
+                      ->getQuery()
+                      ->getOneOrNullResult();
   }
 
   /**
@@ -65,16 +65,16 @@ class CustomFieldsRecordsMapsRepository {
    * @return mixed
    * @throws NonUniqueResultException
    */
-  public function countDatatypesUsed(string $ownerId, string $datatype) {
+  public function countDatatypesUsed(string $ownerId, string $datatype): int {
 
-    return $this->repo->createQueryBuilder("cm")
-                      ->select("count(cm.ownerId)")
-                      ->andWhere('cm.ownerId = :ownerId')
-                      ->andWhere('cm.datatype = :datatype')
-                      ->setParameter('ownerId', $ownerId)
-                      ->setParameter("datatype", $datatype)
-                      ->getQuery()
-                      ->getSingleScalarResult();
+    return (int) $this->repo->createQueryBuilder("cm")
+                            ->select("count(cm.ownerId)")
+                            ->andWhere('cm.ownerId = :ownerId')
+                            ->andWhere('cm.datatype = :datatype')
+                            ->setParameter('ownerId', $ownerId)
+                            ->setParameter("datatype", $datatype)
+                            ->getQuery()
+                            ->getSingleScalarResult();
   }
 
   /**
@@ -108,13 +108,13 @@ class CustomFieldsRecordsMapsRepository {
 
 
     return $this->repo->createQueryBuilder('cm')
-                      ->select('esFieldName')
+                      ->select('cm.esFieldName')
                       ->andWhere('cm.ownerId = :ownerId')
                       ->andWhere('cm.machineFieldName = :machineFieldName')
                       ->setParameter('ownerId', $ownerId)
                       ->setParameter("machineFieldName", $machineFieldName)
                       ->getQuery()
-                      ->getSingleResult();
+                      ->getSingleScalarResult();
   }
 
   /**
@@ -124,16 +124,45 @@ class CustomFieldsRecordsMapsRepository {
    * @return array
    */
   public function fetchESFieldNamesInUse(string $ownerId, string $datatype) {
-    return $this->repo->createQueryBuilder('cm')
-                      ->select('esFieldName')
-                      ->andWhere('cm.ownerId = :ownerId')
-                      ->andWhere('cm.datatype = :datatype')
-                      ->setParameter('ownerId', $ownerId)
-                      ->setParameter("datatype", $datatype)
-                      ->getQuery()
-                      ->getArrayResult();
+    return array_column($this->repo->createQueryBuilder('cm')
+                                   ->select('cm.esFieldName')
+                                   ->andWhere('cm.ownerId = :ownerId')
+                                   ->andWhere('cm.datatype = :datatype')
+                                   ->setParameter('ownerId', $ownerId)
+                                   ->setParameter("datatype", $datatype)
+                                   ->getQuery()
+                                   ->getArrayResult(), 'esFieldName');
   }
 
+  /**
+   * @param string $ownerId
+   *
+   * @return CustomFieldsRecordsMaps[]
+   */
+  public function fetchCustomFieldsRecordOfOwner(string $ownerId) {
+    return $this->repo->createQueryBuilder('cm')
+                      ->where('cm.ownerId = :ownerId')
+                      ->setParameter('ownerId', $ownerId)
+                      ->getQuery()
+                      ->getResult();
+  }
 
+  /**
+   * @param string $ownerId
+   * @param string $ESfieldName
+   *
+   * @return mixed
+   * @throws NonUniqueResultException
+   * @throws \Doctrine\ORM\NoResultException
+   */
+  public function fetchCustomFieldsRecordByEsFieldName(string $ownerId, string $ESfieldName) {
+    return $this->repo->createQueryBuilder('cm')
+                      ->where('cm.ownerId = :ownerId')
+                      ->andWhere('cm.esFieldName = :esfname')
+                      ->setParameter('ownerId', $ownerId)
+                      ->setParameter('esfname', $ESfieldName)
+                      ->getQuery()
+                      ->getSingleResult();
+  }
 
 }

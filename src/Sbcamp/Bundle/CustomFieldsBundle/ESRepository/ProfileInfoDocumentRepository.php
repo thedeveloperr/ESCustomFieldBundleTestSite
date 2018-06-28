@@ -2,8 +2,10 @@
 
 namespace Sbcamp\Bundle\CustomFieldsBundle\ESRepository;
 
-class ProfileInfoDocumentRepository extends AbstractDocumentRepository {
+use Elasticsearch\Client;
+use Sbcamp\Bundle\CustomFieldsBundle\ESDocument\ProfileInfoDocument;
 
+class ProfileInfoDocumentRepository extends AbstractDocumentRepository {
 
 
 }

@@ -9,44 +9,73 @@ use Sbcamp\Bundle\CustomFieldsBundle\ESDocument\ProfileInfoDocument;
 
 class AbstractDocumentRepository {
 
+  /**
+   * @var string
+   */
   private $index;
 
+  /**
+   * @var string
+   */
   private $type;
 
+  /**
+   * @var Client
+   */
   private $client;
+
+  /**
+   * @var \ReflectionClass
+   */
+  private $reflectionClass;
 
   /**
    * AbstractDocumentRepository constructor.
    *
    * @param Client $client
-   * @param \ReflectionClass $eSDocumentReflectionClass Class to access static functions
+   * @param        $eSDocumentReflectionClass
+   *
+   * @throws \Exception
    */
-  public function __construct(Client $client,$eSDocumentReflectionClass) {
+  public function __construct(Client $client, \ReflectionClass $eSDocumentReflectionClass) {
     $this->client = $client;
     $this->reflectionClass = $eSDocumentReflectionClass;
     $this->index = $eSDocumentReflectionClass->getStaticPropertyValue('index');
     if(is_null($this->index)){
-      throw \Exception("An Index for the repositiory must set");
+      throw new \Exception("An Index for the repositiory must set");
     }
 
     $this->type = $eSDocumentReflectionClass->getStaticPropertyValue('type');
     if(is_null($this->type)){
-      throw \Exception("A type for the repositiory must set");
+      throw new \Exception("A type for the repositiory must set");
     }
   }
 
-  public function index(ESDocumentInterface $doc){
+  public function getIndex():string{
+    return $this->index;
+  }
+
+  public function getType():string{
+    return $this->type;
+  }
+
+  /**
+   * @param ESDocumentInterface $doc
+   *
+   * @return string Elasticsearch Document automated generated id
+   */
+  public function index(ESDocumentInterface $doc):string{
     $params = [
       'index' => $this->index,
       'type' => $this->type,
 
     ];
-    if(!is_null($doc->getId())){
-      $params['id'] = $doc->getId();
+    if(!is_null($doc->getESId())){
+      $params['id'] = $doc->getESId();
     }
-    $params['body'] = $doc->getFields();
+    $params['body'] = $doc->getESFields();
     $repsonse =  $this->client->index($params);
-    return $repsonse;
+    return $repsonse['_id'];
 
   }
 
@@ -64,7 +93,8 @@ class AbstractDocumentRepository {
      */
     $instanceToBefilled = $this->reflectionClass->newInstance();
 
-    $instanceToBefilled->setFields($response['_source']);
+    $instanceToBefilled->setESFields($response['_source']);
+    $instanceToBefilled->setESId($response['_id']);
 
     return $instanceToBefilled;
 

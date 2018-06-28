@@ -4,19 +4,8 @@ namespace Sbcamp\Bundle\CustomFieldsBundle;
 
 interface FieldInterface {
 
-  //  /**
-  //   * @param string $type
-  //   *
-  //   */
-  //  public function setType(string $type);
-  //
-  //  /**
-  //   * @return string
-  //   */
-  //  public function getType(): string;
-
   /**
-   * @param string $type
+   * @param string $name
    *
    */
   public function setName(string $name);
@@ -27,7 +16,7 @@ interface FieldInterface {
   public function getMachineName(): string;
 
   /**
-   * @param string $type
+   * @param string $name
    *
    */
   public function setMachineName(string $name);
@@ -38,15 +27,26 @@ interface FieldInterface {
   public function getName(): string;
 
   /**
+   * @param mixed $value
+   *
+   */
+  public function setValue($value);
+
+  /**
+   * @return mixed
+   */
+  public function getValue();
+
+  /**
    * @param string $type
    *
    */
-  public function setValue(string $type);
+  public function setType(string $type);
 
   /**
    * @return string
    */
-  public function getValue(): string;
+  public function getType(): string;
 
 }
 

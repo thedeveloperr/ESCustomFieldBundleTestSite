@@ -5,6 +5,7 @@ namespace Sbcamp\Bundle\CustomFieldsBundle\Repository;
 use Sbcamp\Bundle\CustomFieldsBundle\Entity\ESMappingField;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sbcamp\Bundle\CustomFieldsBundle\ESMappingFieldInterface;
 
 /**
  * Repository for CRUD on ESMappingField Entity
@@ -31,20 +32,36 @@ class ESMappingFieldRepository {
     $this->repo = $em->getRepository(ESMappingField::class);
   }
 
+//  /**
+//   * @param string $ownerId
+//   * @param string $datatype
+//   *
+//   * @return ESMappingField[]
+//   */
+//  public function fetchESFieldNamesByDataype(string $datatype): array {
+//    return $this->repo->createQueryBuilder('esm')
+//                      ->select('fieldName')
+//                      ->andWhere('esm.datatype = :datatype')
+//                      ->setParameter("datatype", $datatype)
+//                      ->getQuery()
+//                      ->getScalarResult();
+//  }
+
   /**
    * @param string $ownerId
    * @param string $datatype
    *
    * @return ESMappingField[]
    */
-  public function fetchESFieldNamesByDataype(string $datatype): array {
+  public function fetchESMappingFieldsByDataype(string $datatype): array {
     return $this->repo->createQueryBuilder('esm')
                       ->select('fieldName')
                       ->andWhere('esm.datatype = :datatype')
                       ->setParameter("datatype", $datatype)
                       ->getQuery()
-                      ->getArrayResult();
+                      ->getResult();
   }
+
 
   /**
    * @param ESMappingField $ESMappingField

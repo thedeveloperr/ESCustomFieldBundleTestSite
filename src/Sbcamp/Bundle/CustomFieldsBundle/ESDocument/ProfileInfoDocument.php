@@ -8,6 +8,9 @@ class ProfileInfoDocument implements ESDocumentInterface {
   public static $type = '_doc';
   private $fields = [];
 
+
+  private static $ownerIdKey = "ownerId";
+
   /**
    * @var string|null
    */
@@ -15,6 +18,21 @@ class ProfileInfoDocument implements ESDocumentInterface {
 
   public function __construct(){
 
+  }
+
+  /**
+   * @return string
+   */
+  public function setOwnerIdESfield(string $ownerId){
+    $this->fields[self::$ownerIdKey] = $ownerId;
+    return $this;
+  }
+
+  /**
+   * @param string $ownerId
+   */
+  public function getOwnerIdESfield():string{
+    return $this->fields[self::$ownerIdKey];
   }
 
   /**
@@ -36,7 +54,7 @@ class ProfileInfoDocument implements ESDocumentInterface {
    *
    * @return $this
    */
-  public function setId(string $id) {
+  public function setESId(string $id) {
     $this->id = $id;
     return $this;
   }
@@ -44,7 +62,7 @@ class ProfileInfoDocument implements ESDocumentInterface {
   /**
    * @return string
    */
-  public function getId(): string {
+  public function getESId(): string {
     return $this->id;
   }
 
@@ -53,7 +71,7 @@ class ProfileInfoDocument implements ESDocumentInterface {
    *
    * @return mixed|void
    */
-  public function setFields(array $arr) {
+  public function setESFields(array $arr) {
     $this->fields = $arr;
   }
 
@@ -63,14 +81,14 @@ class ProfileInfoDocument implements ESDocumentInterface {
    *
    * @return mixed|void
    */
-  public function setFieldValue(string $key, string $value) {
+  public function addSetESField(string $key, $value) {
     $this->fields[$key] = $value;
   }
 
   /**
    * @return array
    */
-  public function getFields(): array {
+  public function getESFields(): array {
     return $this->fields;
   }
 
@@ -79,7 +97,7 @@ class ProfileInfoDocument implements ESDocumentInterface {
    *
    * @return string
    */
-  public function getFieldValue(string $key): string {
+  public function getESFieldValue(string $key) {
     return $this->fields[$key];
   }
 

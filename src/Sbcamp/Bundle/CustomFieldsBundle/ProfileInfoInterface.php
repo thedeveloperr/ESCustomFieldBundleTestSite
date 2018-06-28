@@ -19,14 +19,14 @@ interface ProfileInfoInterface{
   /**
    * @return string
    */
-  public function getProfileId(): string;
+  public function getESId(): string;
 
   /**
    * @param string $leadId
    *
    * @return mixed
    */
-  public function setProfileId(string $leadId);
+  public function setESId(string $id);
 
   /**
    * @param FieldInterface $field
@@ -39,7 +39,12 @@ interface ProfileInfoInterface{
    * @param FieldInterface[]
    *
    */
-  public function addFields(array $fieldsArr);
+  public function setFields(array $fieldsArr);
+
+  /**
+   * @return FieldInterface[]
+   */
+  public function getFields(): array ;
 
   /**
    * @param string $name

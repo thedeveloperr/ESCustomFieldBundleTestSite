@@ -17,38 +17,38 @@ interface ESDocumentInterface {
   /**
    * @param $id
    */
-  public function setId(string $id);
+  public function setESId(string $id);
 
   /**
    * @return string
    */
-  public function getId(): string;
+  public function getESId(): string;
 
   /**
    * @param array $arr
    *
    * @return mixed
    */
-  public function setFields(array $arr);
+  public function setESFields(array $arr);
 
   /**
    * @return array
    */
-  public function getFields(): array;
+  public function getESFields(): array;
 
   /**
    * @param string $key
-   * @param string $value
+   * @param mixed $value
    *
    * @return mixed
    */
-  public function setFieldValue(string $key, string $value);
+  public function addSetESField(string $key, $value);
 
   /**
    * @param string $key
    *
-   * @return string
+   * @return mixed
    */
-  public function getFieldValue(string $key): string;
+  public function getESFieldValue(string $key);
 
 }

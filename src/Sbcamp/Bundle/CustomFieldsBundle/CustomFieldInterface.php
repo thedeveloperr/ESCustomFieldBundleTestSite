@@ -40,12 +40,12 @@ interface CustomFieldInterface {
   /**
    * @return string
    */
-  public function getMachineFieldName(): string;
+  public function getMachineName(): string;
 
   /**
    * @return mixed
    */
-  public function setMachineFieldName(string $machineFieldName);
+  public function setMachineName(string $machineFieldName);
 
 
 }

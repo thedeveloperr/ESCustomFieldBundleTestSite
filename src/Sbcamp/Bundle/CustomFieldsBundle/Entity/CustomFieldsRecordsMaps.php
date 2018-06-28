@@ -7,7 +7,10 @@ use Sbcamp\Bundle\CustomFieldsBundle\CustomFieldInterface;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="custom_fields_records_maps",indexes={@ORM\Index(name="search_idx",columns={"owner_id","datatype"})})
+ * @ORM\Table(name="custom_fields_records_maps", indexes={
+ *   @ORM\Index(name="search_idx",columns={"owner_id","datatype"}),
+ *   @ORM\Index(name="esfname_index", columns={"owner_id","es_field_name"})
+ * })
  */
 class CustomFieldsRecordsMaps {
 
@@ -63,9 +66,7 @@ class CustomFieldsRecordsMaps {
     return implode("_", $temp);
   }
 
-  public function getId() {
-    return $this->id;
-  }
+
 
   public function getOwnerId(): ?string {
     return $this->ownerId;
