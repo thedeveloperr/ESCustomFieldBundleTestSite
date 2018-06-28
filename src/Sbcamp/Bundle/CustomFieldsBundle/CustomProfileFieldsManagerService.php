@@ -2,7 +2,6 @@
 
 namespace Sbcamp\Bundle\CustomFieldsBundle;
 
-use Elasticsearch\Client;
 use Sbcamp\Bundle\CustomFieldsBundle\Entity\ESMappingField;
 use Sbcamp\Bundle\CustomFieldsBundle\ESDocument\ProfileInfoDocument;
 use Sbcamp\Bundle\CustomFieldsBundle\ESRepository\ProfileInfoDocumentRepository;
@@ -14,10 +13,7 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
 
   private $datatypeLimits = [];
 
-  /**
-   * @var Client
-   */
-  private $client;
+
 
   /**
    * @var CustomFieldsRecordsMapsRepository
@@ -39,15 +35,15 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
    */
   private $esIndexManager;
 
-  public function _construct(Client $client, CustomFieldsRecordsMapsRepository $CustomFieldRepo,
+  public function _construct(CustomFieldsRecordsMapsRepository $CustomFieldRepo,
                              ESMappingFieldRepository $ESMappingFieldRepo,
-                             ProfileInfoDocumentRepository $profileInfoDocRepo) {
-    $this->client = $client;
+                             ProfileInfoDocumentRepository $profileInfoDocRepo,
+                             ESIndexManager $indexManager) {
+
     $this->customFieldRepo = $CustomFieldRepo;
     $this->esMappingFieldRepo = $ESMappingFieldRepo;
     $this->profileInfoDocRepo = $profileInfoDocRepo;
-    $this->esIndexManager = new ESIndexManager($client, $this->profileInfoDocRepo->getIndex(),
-      $this->profileInfoDocRepo->getType());
+    $this->esIndexManager = $indexManager;
   }
 
   /**

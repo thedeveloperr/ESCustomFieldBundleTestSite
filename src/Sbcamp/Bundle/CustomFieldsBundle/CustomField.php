@@ -4,12 +4,24 @@ namespace Sbcamp\Bundle\CustomFieldsBundle;
 
 class CustomField implements CustomFieldInterface {
 
+  /**
+   * @var string
+   */
   private $ownerId;
 
+  /**
+   * @var string
+   */
   private $name;
 
+  /**
+   * @var string
+   */
   private $machineName;
 
+  /**
+   * @var string
+   */
   private $type;
 
   public function __construct($ownerId, string $fieldName, string $machineFieldName, string $type) {
@@ -19,35 +31,71 @@ class CustomField implements CustomFieldInterface {
     $this->type = $type;
   }
 
+  /**
+   * @param string $machineFieldName
+   *
+   * @return $this|mixed
+   */
   public function setMachineName(string $machineFieldName) {
-    // TODO: Implement setMachineFieldName() method.
+    $this->machineName = $machineFieldName;
+    return $this;
   }
 
+  /**
+   * @return string
+   */
   public function getMachineName(): string {
-    // TODO: Implement getMachineFieldName() method.
+    return $this->machineName;
   }
 
+  /**
+   * @param string $name
+   *
+   * @return $this
+   */
   public function setName(string $name) {
-    // TODO: Implement setName() method.
+    $this->name = $name;
+    return $this;
   }
 
+  /**
+   * @return string
+   */
   public function getName(): string {
-    // TODO: Implement getName() method.
+    return $this->name;
   }
 
+  /**
+   * @param string $id
+   *
+   * @return $this
+   */
   public function setOwnerId(string $id) {
-    // TODO: Implement setOwnerId() method.
+    $this->ownerId = $id;
+    return $this;
   }
 
+  /**
+   * @return string
+   */
   public function getOwnerId(): string {
-    // TODO: Implement getOwnerId() method.
+    return $this->ownerId;
   }
 
+  /**
+   * @param string $type
+   *
+   * @return $this
+   */
   public function setType(string $type) {
-    // TODO: Implement setType() method.
+    $this->type = $type;
+    return $this;
   }
 
+  /**
+   * @return string
+   */
   public function getType(): string {
-    // TODO: Implement getType() method.
+    return $this->type;
   }
 }

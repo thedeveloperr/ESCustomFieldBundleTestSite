@@ -7,7 +7,7 @@ use ONGR\ElasticsearchDSL\Search;
 use Sbcamp\Bundle\CustomFieldsBundle\ESDocument\ESDocumentInterface;
 use Sbcamp\Bundle\CustomFieldsBundle\ESDocument\ProfileInfoDocument;
 
-class AbstractDocumentRepository {
+abstract class AbstractDocumentRepository {
 
   /**
    * @var string
