@@ -6,9 +6,9 @@ use Sbcamp\Bundle\CustomFieldsBundle\ESMappingFieldInterface;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="esmapping_field",indexes={@ORM\Index(name="esmapping_field_index",columns={"field_name","datatype"})})
+ * @ORM\Table(name="esmapping_field",indexes={@ORM\Index(name="esmapping_field_index",columns={"datatype"})})
  */
-class ESMappingField
+class ESMappingField implements ESMappingFieldInterface
 {
 
 

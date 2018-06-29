@@ -62,7 +62,7 @@ class ProfileInfoDocument implements ESDocumentInterface {
   /**
    * @return string
    */
-  public function getESId(): string {
+  public function getESId(){
     return $this->id;
   }
 

@@ -79,6 +79,18 @@ abstract class AbstractDocumentRepository {
 
   }
 
+  public function reindex(ESDocumentInterface $doc):string{
+    $params = [
+      'index' => $this->index,
+      'type' => $this->type,
+      'id' => $doc->getESId()
+
+    ];
+    $params['body'] = $doc->getESFields();
+    $repsonse =  $this->client->index($params);
+    return $repsonse['_id'];
+  }
+
 
   public function findById(string $id){
     $params = [

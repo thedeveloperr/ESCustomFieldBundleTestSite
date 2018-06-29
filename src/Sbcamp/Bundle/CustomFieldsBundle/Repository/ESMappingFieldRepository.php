@@ -55,7 +55,6 @@ class ESMappingFieldRepository {
    */
   public function fetchESMappingFieldsByDataype(string $datatype): array {
     return $this->repo->createQueryBuilder('esm')
-                      ->select('fieldName')
                       ->andWhere('esm.datatype = :datatype')
                       ->setParameter("datatype", $datatype)
                       ->getQuery()

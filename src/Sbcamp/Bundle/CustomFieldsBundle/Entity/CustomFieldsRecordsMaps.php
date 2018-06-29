@@ -50,7 +50,7 @@ class CustomFieldsRecordsMaps {
     $this->ownerId = $customField->getOwnerId();
     $this->fieldName = $customField->getName();
     $this->datatype = $customField->getType();
-    $this->machineFieldName = self::createMachineFieldName($this->fieldName);
+    $this->machineFieldName = $customField->getMachineName();
   }
 
   /**
@@ -84,7 +84,6 @@ class CustomFieldsRecordsMaps {
 
   public function setFieldName(string $fieldName): self {
     $this->fieldName = $fieldName;
-    $this->machineFieldName = self::createMachineFieldName($fieldName);
     return $this;
   }
 

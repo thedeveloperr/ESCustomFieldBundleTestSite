@@ -10,6 +10,7 @@ interface CustomProfileFieldsManagerServiceInterface {
 
   /**
    * @param string $ownerId
+   *  TODO: Think if we need to give control to user to give custom Id to ES documents while indexing documents for the first time
    *
    * @return CustomFieldInterface[]
    */
@@ -52,7 +53,7 @@ interface CustomProfileFieldsManagerServiceInterface {
    *
    * @return mixed
    */
-  public function addProfileInfo(ProfileInfoInterface $profile);
+  public function indexProfileInfo(ProfileInfoInterface $profile);
 
   /**
    * @param string $ownerId
@@ -74,7 +75,7 @@ interface CustomProfileFieldsManagerServiceInterface {
    *
    * @return mixed
    */
-  public function updateProfileInfo(ProfileInfoInterface $profile);
+  public function reindexProfileInfo(ProfileInfoInterface $profile);
 
   /**
    * @param ProfileInfoInterface $profile

@@ -19,7 +19,7 @@ class ProfileInfo implements ProfileInfoInterface{
    */
   private $ownerId;
 
-  public function __construct(string $ownerId, string $ESId) {
+  public function __construct(string $ownerId, string $ESId=null) {
     $this->ESId = $ESId;
     $this->ownerId = $ownerId;
   }

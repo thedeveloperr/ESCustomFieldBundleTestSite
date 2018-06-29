@@ -84,7 +84,7 @@ class CustomFieldsRecordsMapsRepository {
    * @return bool
    * @throws NonUniqueResultException
    */
-  public function isFieldNameInUse(string $ownerId, string $machineFieldName) {
+  public function isMachineFieldNameInUse(string $ownerId, string $machineFieldName) {
 
 
     return !is_null($this->repo->createQueryBuilder('cm')

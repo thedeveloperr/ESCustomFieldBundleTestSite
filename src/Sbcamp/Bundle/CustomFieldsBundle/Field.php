@@ -36,14 +36,15 @@ class Field implements FieldInterface {
    *
    */
   public function setName(string $name){
-
+    $this->name = $name;
+    return $this;
   }
 
   /**
    * @return string
    */
   public function getMachineName(): string{
-
+    return $this->machineName;
   }
 
   /**
@@ -51,14 +52,15 @@ class Field implements FieldInterface {
    *
    */
   public function setMachineName(string $name){
-
+    $this->machineName = $name;
+    return $this;
   }
 
   /**
    * @return string
    */
   public function getName(): string{
-
+    return $this->name;
   }
 
   /**
@@ -66,14 +68,15 @@ class Field implements FieldInterface {
    *
    */
   public function setValue($value){
-
+    $this->value = $value;
+    return $this;
   }
 
   /**
    * @return mixed
    */
   public function getValue(){
-
+    return $this->value;
   }
 
   /**
@@ -81,13 +84,14 @@ class Field implements FieldInterface {
    *
    */
   public function setType(string $type){
-
+    $this->type = $type;
+    return $this;
   }
 
   /**
    * @return string
    */
   public function getType(): string{
-
+    return $this->type;
   }
 }

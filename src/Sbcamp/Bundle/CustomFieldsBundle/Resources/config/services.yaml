@@ -2,25 +2,25 @@ services:
 
     Sbcamp\Bundle\CustomFieldsBundle\DoctrineEntityManagerSharingParentService:
         abstract:  true
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ["@doctrine.orm.entity_manager"]
 
     sbcamp.bundle.esclient:
         class: Elasticsearch\Client
-        factory: 'Sbcamp\Bundle\CustomFieldsBundle\ESClientFactory:create'
+        factory: ['Sbcamp\Bundle\CustomFieldsBundle\ESClientFactory','create']
 
     sbcamp.bundle.custom_fields_records_repo:
+        public: true
         parent: Sbcamp\Bundle\CustomFieldsBundle\DoctrineEntityManagerSharingParentService
         class: Sbcamp\Bundle\CustomFieldsBundle\Repository\CustomFieldsRecordsMapsRepository
-
+#        arguments: ['@doctrine.orm.entity_manager']
 
     sbcamp.bundle.es_mapping_fields_repo:
         parent: Sbcamp\Bundle\CustomFieldsBundle\DoctrineEntityManagerSharingParentService
         class: Sbcamp\Bundle\CustomFieldsBundle\Repository\ESMappingFieldRepository
 
-
     Sbcamp\Bundle\CustomFieldsBundle\ESClientSharingParentService:
         abstract: true
-        arguments: ['@sbcamp.bundle.esclient']
+        arguments: ["@sbcamp.bundle.esclient"]
 
 
     sbcamp.bundle.profile_info_doc_es_repo:
@@ -28,10 +28,12 @@ services:
         class: Sbcamp\Bundle\CustomFieldsBundle\ESRepository\ProfileInfoDocumentRepository
 
     sbcamp.bundle.es_profine_info_index_manager:
+        public: true
         parent: Sbcamp\Bundle\CustomFieldsBundle\ESClientSharingParentService
         class: Sbcamp\Bundle\CustomFieldsBundle\ESProfileInfoIndexManager
 
     sbcamp.bundle.custom_profile_fields_manager:
         class: Sbcamp\Bundle\CustomFieldsBundle\CustomProfileFieldsManagerService
-        factory: 'Sbcamp\Bundle\CustomFieldsBundle\CustomProfileFieldsManagerServiceFactory:create'
-        arguments: ['@sbcamp.bundle.custom_fields_records_repo', '@sbcamp.bundle.es_mapping_fields_repo', '@sbcamp.bundle.profile_info_doc_es_repo']
+        public: true
+        arguments: ["@sbcamp.bundle.custom_fields_records_repo","@sbcamp.bundle.es_mapping_fields_repo",
+         "@sbcamp.bundle.profile_info_doc_es_repo", "@sbcamp.bundle.es_profine_info_index_manager",[]]

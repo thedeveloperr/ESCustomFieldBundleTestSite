@@ -35,15 +35,23 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
    */
   private $esIndexManager;
 
-  public function _construct(CustomFieldsRecordsMapsRepository $CustomFieldRepo,
+  public function __construct(CustomFieldsRecordsMapsRepository $CustomFieldRepo,
                              ESMappingFieldRepository $ESMappingFieldRepo,
                              ProfileInfoDocumentRepository $profileInfoDocRepo,
-                             ESIndexManager $indexManager) {
+                             ESIndexManager $indexManager, array $configs) {
 
     $this->customFieldRepo = $CustomFieldRepo;
     $this->esMappingFieldRepo = $ESMappingFieldRepo;
     $this->profileInfoDocRepo = $profileInfoDocRepo;
     $this->esIndexManager = $indexManager;
+
+    /**
+     * For Testing only remove it and replace it with reading configs
+     * TODO
+     */
+    $this->datatypeLimits['keyword'] = 5;
+    $this->datatypeLimits['boolean'] = 3;
+    $this->datatypeLimits['date'] = 2;
   }
 
   /**
@@ -91,11 +99,13 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
 
     $inUse = $this->customFieldRepo->fetchESFieldNamesInUse($ownerId, $datatype);
     $available = $this->esMappingFieldRepo->fetchESMappingFieldsByDataype($datatype);
+    var_dump($available);
 
     $elementsNotinUse = array_filter($available, function($item) use ($inUse) {
       /**
        * @var ESMappingField $item
        */
+
       return !in_array($item->getFieldName(), $inUse);
     });
 
@@ -124,7 +134,7 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
     $esFieldNotInUse = $this->getESFieldNotInUse($field->getOwnerId(), $field->getType());
     $newCustomFieldRecord = new CustomFieldsRecordsMaps($field);
     $newCustomFieldRecord->setEsFieldName($esFieldNotInUse->getFieldName());
-    $this->customFieldRepo->insert($newCustomFieldRecord->get);
+    $this->customFieldRepo->insert($newCustomFieldRecord);
     $this->esIndexManager->addNewMappingField($esFieldNotInUse);
   }
 
@@ -163,8 +173,9 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
    * @throws \Doctrine\ORM\NonUniqueResultException
    */
   public function doesCustomFieldExists(CustomFieldInterface $field): bool {
-    return $this->customFieldRepo->isFieldNameInUse($field->getOwnerId(), $field->getMachineName());
+    return $this->customFieldRepo->isMachineFieldNameInUse($field->getOwnerId(), $field->getMachineName());
   }
+
 
   /**
    * @param string $ownerId
@@ -174,7 +185,7 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
    * @throws \Doctrine\ORM\NonUniqueResultException
    */
   public function dataTypeLimitReached(string $ownerId, string $datatype): bool {
-    return $this->customFieldRepo->countDatatypesUsed($ownerId, $datatype) < $this->datatypeLimits[$datatype];
+    return $this->customFieldRepo->countDatatypesUsed($ownerId, $datatype) === $this->datatypeLimits[$datatype];
   }
 
   /**
@@ -189,13 +200,16 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
   }
 
   /**
+   *
+   * Used for insertions and updating the profile info in elasticsearch
+   *
    * @param ProfileInfoInterface $profile
    *
    * @return mixed
    * @throws \Doctrine\ORM\NoResultException
    * @throws \Doctrine\ORM\NonUniqueResultException
    */
-  public function addProfileInfo(ProfileInfoInterface $profile): string {
+  public function indexProfileInfo(ProfileInfoInterface $profile): string {
 
     $newDoc = new ProfileInfoDocument();
 
@@ -207,8 +221,27 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
     return $this->profileInfoDocRepo->index($newDoc);
   }
 
-  public function updateProfileInfo(ProfileInfoInterface $profile) {
+  /**
+   * @param ProfileInfoInterface $profile
+   *
+   * @return string
+   * @throws \Doctrine\ORM\NoResultException
+   * @throws \Doctrine\ORM\NonUniqueResultException
+   */
+  public function reindexProfileInfo(ProfileInfoInterface $profile): string {
 
+    $newDoc = new ProfileInfoDocument();
+    if(is_null($profile->getESId())){
+      throw new \Exception("ESId missing. To reindex you must provide an es id");
+    }
+    $newDoc->setESId($profile->getESId());
+
+    foreach ($profile->getFields() as $field) {
+      $esfName = $this->customFieldRepo->fetchESFieldName($profile->getOwnerId(), $field->getMachineName());
+
+      $newDoc->addSetESField($esfName,$field->getValue());
+    }
+    return $this->profileInfoDocRepo->reindex($newDoc);
   }
 
   public function deleteProfileInfo(ProfileInfoInterface $profile) {

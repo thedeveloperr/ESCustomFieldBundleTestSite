@@ -22,7 +22,7 @@ interface ESDocumentInterface {
   /**
    * @return string
    */
-  public function getESId(): string;
+  public function getESId();
 
   /**
    * @param array $arr
