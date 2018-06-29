@@ -11,6 +11,11 @@ use Sbcamp\Bundle\CustomFieldsBundle\ProfileInfo;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 
 class TestController extends Controller {
 
@@ -51,8 +56,47 @@ class TestController extends Controller {
     $newprofile->addField($newFiel);
     //$newprofile->addField($newFiel2);
     var_dump($service->reindexProfileInfo($newprofile));
+    echo '\n\n\n';
+    return new Response($service->reindexProfileInfo($newprofile));
+  }
 
-    return new Response("hey");
+  /**
+   * @Route("/get", name="add")
+   */
+  public function getDoc(){
+
+    $encoders = array(new XmlEncoder(), new JsonEncoder());
+    $normalizers = array(new ObjectNormalizer());
+    /**
+     * @var CustomProfileFieldsManagerService $service
+     */
+    $service = $this->container->get("sbcamp.bundle.custom_profile_fields_manager");
+
+
+    $serializer = new Serializer($normalizers, $encoders);
+
+    $json = $serializer->serialize($service->getProfileInfo("1","g8gSSmQBLcWFHkTXPAmB"),'json');
+    return new Response($json);
+  }
+
+  /**
+   * @Route("/getFields",name="getfields")
+   */
+  public function getfields(){
+    $service = $this->container->get("sbcamp.bundle.custom_profile_fields_manager");
+
+
+//    $encoders = array(new XmlEncoder(), new JsonEncoder());
+//    $normalizers = array(new ObjectNormalizer());
+//
+//    $serializer = new Serializer($normalizers, $encoders);
+//
+//    $json = $serializer->serialize($service->getCustomFields("1"),'json');
+      $response = $service->getCustomFields("1");
+      print_r($response);
+
+
+    return new Response('');
   }
 
   /**
