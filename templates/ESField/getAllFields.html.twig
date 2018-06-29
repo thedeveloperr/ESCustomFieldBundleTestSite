@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block title %}Hello !{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Field Name</th>
+            <th>Datatype</th>
+            <th>Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for field in result %}
+            <tr>
+                <td>{{ field.getName }}</td>
+                <td>{{ field.getType }}</td>
+                <td><a class="btn btn-primary" href="/customField/{{ownerId}}/{{ field.getMachineName }}/edit"> Edit </a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
