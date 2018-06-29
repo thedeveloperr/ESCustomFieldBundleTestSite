@@ -165,5 +165,51 @@ class TestController extends Controller {
 
     return $clientBuidler->build();
   }
+  /**
+   * @Route("/es/new",name="es_new_route")
+   * @Method({"GET", "POST"})
+   */
+    public function newESField(Request $request){
 
+        $form = $this->createFormBuilder()
+            ->add('OwnderId',TextType::class)
+            ->add('FieldName',TextType::class)
+            ->add('FieldDatatype',TextType::class)
+            ->add('Add', SubmitType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $encoders = array(new XmlEncoder(), new JsonEncoder());
+            $normalizers = array(new ObjectNormalizer());
+
+            $serializer = new Serializer($normalizers, $encoders);
+
+            $jsonResponse  = $serializer->serialize($form->getData(), 'json');
+
+            print_r($jsonResponse);
+            return new Response('');
+        }
+
+        return $this->render('ESField/new.html.twig',
+            array('form' => $form->createView()));
+    }
+
+    /**
+     * @Route("lead/new", name="add_new_lead")
+     */
+
+    public function addNewLead() {
+        $formdata = array(
+            //array([0] => '')
+        );
+        $form = $this->createFormBuilder()
+            ->add('Add', SubmitType::class)
+            ->getForm();
+
+        return $this->render('ESField/new.html.twig',
+            array('form' => $form->createView())
+        );
+    }
 }
