@@ -8,6 +8,14 @@ use Sbcamp\Bundle\CustomFieldsBundle\CustomProfileFieldsManagerService;
 use Sbcamp\Bundle\CustomFieldsBundle\ESProfileInfoIndexManager;
 use Sbcamp\Bundle\CustomFieldsBundle\Field;
 use Sbcamp\Bundle\CustomFieldsBundle\ProfileInfo;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -157,13 +165,13 @@ class TestController extends Controller {
     ]);
   }
 
-  public function createConnection(){
-    $host =['127.0.0.1:9200'];
+  public function createConnection()
+  {
+      $host = ['127.0.0.1:9200'];
 
-    $clientBuidler = ClientBuilder::create();
-    $clientBuidler->setHosts($host);
+      $clientBuidler = ClientBuilder::create();
+      $clientBuidler->setHosts($host);
 
-    return $clientBuidler->build();
+      return $clientBuidler->build();
   }
-
 }
