@@ -9,11 +9,14 @@ use Sbcamp\Bundle\CustomFieldsBundle\Repository\CustomFieldsRecordsMapsRepositor
 use Sbcamp\Bundle\CustomFieldsBundle\Entity\CustomFieldsRecordsMaps;
 use Sbcamp\Bundle\CustomFieldsBundle\Repository\ESMappingFieldRepository;
 
+/**
+ * Class CustomProfileFieldsManagerService This service is intended for user of bundle. User must interact through this
+ * See all the methods
+ * @package Sbcamp\Bundle\CustomFieldsBundle
+ */
 class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerServiceInterface {
 
   private $datatypeLimits = [];
-
-
 
   /**
    * @var CustomFieldsRecordsMapsRepository
@@ -36,9 +39,9 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
   private $esIndexManager;
 
   public function __construct(CustomFieldsRecordsMapsRepository $CustomFieldRepo,
-                             ESMappingFieldRepository $ESMappingFieldRepo,
-                             ProfileInfoDocumentRepository $profileInfoDocRepo,
-                             ESIndexManager $indexManager, array $configs) {
+                              ESMappingFieldRepository $ESMappingFieldRepo,
+                              ProfileInfoDocumentRepository $profileInfoDocRepo,
+                              ESIndexManager $indexManager, array $configs) {
 
     $this->customFieldRepo = $CustomFieldRepo;
     $this->esMappingFieldRepo = $ESMappingFieldRepo;
@@ -46,8 +49,8 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
     $this->esIndexManager = $indexManager;
 
     /**
-     * For Testing only remove it and replace it with reading configs
-     * TODO
+     * TODO: Hardcoded For Testing only remove it and replace it with reading configs
+     *
      */
     $this->datatypeLimits['keyword'] = 5;
     $this->datatypeLimits['boolean'] = 3;
@@ -74,6 +77,9 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
   }
 
   /**
+   *
+   * Get all the custom fields created by a user
+   *
    * @param string $ownerId
    *
    * @return CustomField[]
@@ -86,6 +92,21 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
        */
       return new CustomField($item->getOwnerId(), $item->getFieldName(), $item->getMachineFieldName(), $item->getDatatype());
     }, $customFieldsRecords);
+  }
+
+  /**
+   * Get the custom field created by a user using userId and Fields internal machine name
+   *
+   * @param string $ownerId
+   * @param string $machineName
+   *
+   * @return CustomFieldInterface
+   * @throws \Doctrine\ORM\NonUniqueResultException
+   */
+  public function getCustomField(string $ownerId, string $machineName): CustomFieldInterface {
+    $customFieldsRecord = $this->customFieldRepo->fetchByCompositeId($ownerId, $machineName);
+    return new CustomField($customFieldsRecord->getOwnerId(), $customFieldsRecord->getFieldName(),
+      $customFieldsRecord->getMachineFieldName(), $customFieldsRecord->getDatatype());
   }
 
   /**
@@ -119,12 +140,15 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
   }
 
   /**
+   * For Adding a custom field for a user.
+   * User must send the CustomFieldInterface's implementation object to add it
+   *
    * @param CustomFieldInterface $field
    *
    * @throws \Exception
    */
   public function addCustomField(CustomFieldInterface $field) {
-    if ($this->doesCustomFieldExists($field)) {
+    if ($this->doesCustomFieldExists($field->getOwnerId(),$field->getMachineName())) {
       throw new \Exception("Field Already Exists");
     }
     if ($this->dataTypeLimitReached($field->getOwnerId(), $field->getType())) {
@@ -139,6 +163,9 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
   }
 
   /**
+   *
+   * Update the name of existing Field
+   *
    * @param CustomFieldInterface $oldfield
    * @param CustomFieldInterface $newField
    *
@@ -148,7 +175,7 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
    */
   public function updateCustomFieldName(CustomFieldInterface $oldfield, CustomFieldInterface $newField) {
 
-    if (!$this->doesCustomFieldExists($oldfield)) {
+    if (!$this->doesCustomFieldExists($oldfield->getOwnerId(),$oldfield->getMachineName())) {
       throw new \Exception("Field doesn't Exists");
     }
 
@@ -167,15 +194,18 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
   }
 
   /**
-   * @param CustomFieldInterface $field
+   *
+   * Checks for if custom fields already exists
+   *
+   * @param string $ownerId
+   * @param string $machinename
    *
    * @return bool
    * @throws \Doctrine\ORM\NonUniqueResultException
    */
-  public function doesCustomFieldExists(CustomFieldInterface $field): bool {
-    return $this->customFieldRepo->isMachineFieldNameInUse($field->getOwnerId(), $field->getMachineName());
+  public function doesCustomFieldExists(string $ownerId, string $machinename): bool {
+    return $this->customFieldRepo->isMachineFieldNameInUse($ownerId, $machinename);
   }
-
 
   /**
    * @param string $ownerId
@@ -201,7 +231,7 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
 
   /**
    *
-   * Used for insertions and updating the profile info in elasticsearch
+   * Used for insertions the profile info in elasticsearch
    *
    * @param ProfileInfoInterface $profile
    *
@@ -216,12 +246,15 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
     foreach ($profile->getFields() as $field) {
       $esfName = $this->customFieldRepo->fetchESFieldName($profile->getOwnerId(), $field->getMachineName());
 
-      $newDoc->addSetESField($esfName,$field->getValue());
+      $newDoc->addSetESField($esfName, $field->getValue());
     }
     return $this->profileInfoDocRepo->index($newDoc);
   }
 
   /**
+   *
+   * Used for updating the profile info in elasticsearch
+   *
    * @param ProfileInfoInterface $profile
    *
    * @return string
@@ -231,7 +264,7 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
   public function reindexProfileInfo(ProfileInfoInterface $profile): string {
 
     $newDoc = new ProfileInfoDocument();
-    if(is_null($profile->getESId())){
+    if (is_null($profile->getESId())) {
       throw new \Exception("ESId missing. To reindex you must provide an es id");
     }
     $newDoc->setESId($profile->getESId());
@@ -239,13 +272,18 @@ class CustomProfileFieldsManagerService implements CustomProfileFieldsManagerSer
     foreach ($profile->getFields() as $field) {
       $esfName = $this->customFieldRepo->fetchESFieldName($profile->getOwnerId(), $field->getMachineName());
 
-      $newDoc->addSetESField($esfName,$field->getValue());
+      $newDoc->addSetESField($esfName, $field->getValue());
     }
     return $this->profileInfoDocRepo->reindex($newDoc);
   }
 
+  /**
+   * @param ProfileInfoInterface $profile
+   *
+   * @return mixed|void
+   */
   public function deleteProfileInfo(ProfileInfoInterface $profile) {
-
+    // TODO: Implement this
   }
 
   /**

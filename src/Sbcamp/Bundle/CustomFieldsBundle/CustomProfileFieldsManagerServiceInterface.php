@@ -10,27 +10,52 @@ interface CustomProfileFieldsManagerServiceInterface {
 
   /**
    * @param string $ownerId
-   *  TODO: Think if we need to give control to user to give custom Id to ES documents while indexing documents for the first time
    *
    * @return CustomFieldInterface[]
    */
   public function getCustomFields(string $ownerId): array;
 
   /**
+   * @param string $ownerId
+   * @param string $machineName
+   *
+   * @return CustomFieldInterface
+   */
+  public function getCustomField(string $ownerId, string $machineName): CustomFieldInterface;
+
+  /**
+   *
+   * For Adding a custom field for a user.
+   * User must send the CustomFieldInterface's implementation object to add it
+   *
+   * TODO: Think if we need to give control to user to give routing to ES documents while indexing documents for the first time
+   *
    * @param CustomFieldInterface $field
    *
    * @return mixed
    */
   public function addCustomField(CustomFieldInterface $field);
 
+  /**
+   *
+   * Update the name of existing Field
+   *
+   * @param CustomFieldInterface $oldfield
+   * @param CustomFieldInterface $newField
+   *
+   * @return mixed
+   */
   public function updateCustomFieldName(CustomFieldInterface $oldfield, CustomFieldInterface $newField);
 
   /**
-   * @param CustomFieldInterface $field
+   * Checks for if custom fields already exists
+   *
+   * @param string $ownerId
+   * @param string $machinename
    *
    * @return bool
    */
-  public function doesCustomFieldExists(CustomFieldInterface $field): bool;
+  public function doesCustomFieldExists(string $ownerId, string $machinename): bool;
 
   /**
    * @param string $ownerId
